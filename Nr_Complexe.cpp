@@ -18,6 +18,7 @@ si constructori care sa permita urmatoarea secventa:
 #include <math.h>
 using namespace std;
 
+//++supraîncãrcarea operatorilor
 
 class Nr_complex
 {
@@ -31,6 +32,8 @@ public:
     //referinta dupa.
     ~Nr_complex(); //prototipul destructorului general
     Nr_complex adunare2(Nr_complex& z2);
+    // Nr_complex operator+(const Nr_complex& z2); -> metoda 1 (= merge doar cu metoda 1)
+    Nr_complex operator=(const Nr_complex& z2);
     Nr_complex scadere2(Nr_complex& z2);
     //adunare2 si scadere2 sunt in cadrul clasei
     void afisare();
@@ -39,6 +42,7 @@ public:
     friend Nr_complex inmultire(Nr_complex&, Nr_complex&);
     friend Nr_complex impartire(Nr_complex&, Nr_complex&);
     friend Nr_complex putere(Nr_complex&, int);
+    friend Nr_complex operator+(Nr_complex&, Nr_complex&); //metoda 2
     friend float modul(Nr_complex&);
     
 
@@ -63,6 +67,14 @@ Nr_complex::Nr_complex(Nr_complex& z)
     this->nr_real = z.nr_real;
     this->nr_imaginar = z.nr_imaginar;
     //nr complex pe care l-am primit il egalez cu obiectul z care exista
+    // constructor de copiere
+}
+
+Nr_complex Nr_complex::operator=(const Nr_complex& z)
+{
+    this->nr_real = z.nr_real;
+    this->nr_imaginar = z.nr_imaginar;
+    return *this;
 }
 
 Nr_complex::~Nr_complex()
@@ -80,13 +92,32 @@ void Nr_complex::afisare()
         cout << nr_real << " + "<<nr_imaginar<<"i"<<endl; 
 }
 
-Nr_complex Nr_complex::adunare2(Nr_complex& z2)
+Nr_complex Nr_complex::adunare2( Nr_complex& z2)
 {
     Nr_complex z3;
     z3.nr_real = this->nr_real + z2.nr_real;
     z3.nr_imaginar = this->nr_imaginar + z2.nr_imaginar;
     return z3;
 }
+
+/*Nr_complex Nr_complex::operator+(const Nr_complex& z2)
+{
+    Nr_complex z3;
+    z3.nr_real = this->nr_real + z2.nr_real;
+    z3.nr_imaginar = this->nr_imaginar + z2.nr_imaginar;
+    return z3;
+}
+*/
+
+
+Nr_complex operator+(Nr_complex& z1, Nr_complex& z2)
+{
+    Nr_complex z3;
+    z3.nr_real = z1.nr_real + z2.nr_real;
+    z3.nr_imaginar = z1.nr_imaginar + z2.nr_imaginar;
+    return z3;
+}
+
 
 Nr_complex Nr_complex::scadere2(Nr_complex& z2)
 {
@@ -176,10 +207,10 @@ int main()
     z_putere.afisare();
     cout << modul(z1) << endl;
     */
-    z_adunare = z1.adunare2(z2);
+    z_adunare = z1 + z2;
     z_adunare.afisare();
-    z_scadere = z1.scadere2(z2);
-    z_scadere.afisare();
+   /* z_scadere = z1.scadere2(z2);
+    z_scadere.afisare();*/
     return 0;
 }
 
